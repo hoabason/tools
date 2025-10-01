@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bộ Công Cụ Tiện Ích</title>
+    <!-- Tích hợp Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Thêm font chữ Inter */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        /* Tùy chỉnh thanh cuộn cho giao diện dark mode */
+        select::-webkit-scrollbar, textarea::-webkit-scrollbar, pre::-webkit-scrollbar {
+            width: 8px;
+        }
+        select::-webkit-scrollbar-track, textarea::-webkit-scrollbar-track, pre::-webkit-scrollbar-track {
+            background: #1f2937; /* bg-gray-800 */
+            border-radius: 10px;
+        }
+        select::-webkit-scrollbar-thumb, textarea::-webkit-scrollbar-thumb, pre::-webkit-scrollbar-thumb {
+            background: #4b5563; /* bg-gray-600 */
+            border-radius: 10px;
+        }
+        select::-webkit-scrollbar-thumb:hover, textarea::-webkit-scrollbar-thumb:hover, pre::-webkit-scrollbar-thumb:hover {
+            background: #6b7280; /* bg-gray-500 */
+        }
+        /* Style cho Tab */
+        .tab-btn {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-btn.active {
+            border-bottom-color: #06b6d4; /* cyan-500 */
+            color: #06b6d4;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="text-gray-200 flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
+
+    <main class="container mx-auto w-full max-w-5xl">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-cyan-400 tracking-wide">BỘ CÔNG CỤ TIỆN ÍCH</h1>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="mb-6 border-b border-gray-700">
+            <ul class="flex flex-wrap -mb-px text-lg font-medium text-center" id="tab-navigation">
+                <li class="mr-2">
+                    <button class="tab-btn inline-block p-4 rounded-t-lg active" data-tab="email-tool">Soạn Thảo Email</button>
+                </li>
+                <li>
+                    <button class="tab-btn inline-block p-4 rounded-t-lg" data-tab="obsidian-tool">Liên kết Desktop & Obsidian</button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Tab Content Area -->
+        <div id="tab-content">
+            <!-- 1. CÔNG CỤ SOẠN THẢO EMAIL -->
+            <div id="email-tool" class="tab-content active">
+                <div class="bg-gray-800 rounded-lg border border-gray-700 p-6 md:p-8">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Form nhập liệu Email -->
+                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 flex flex-col">
+                            <h2 class="text-xl font-bold text-white mb-4">1. Nhập thông tin</h2>
+                            <form id="emailForm" class="flex flex-col h-full">
+                                <div class="mb-5">
+                                    <label for="recipient" class="block text-gray-300 font-medium mb-2">Chọn người nhận (giữ Ctrl để chọn nhiều)</label>
+                                    <select multiple id="recipient" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500" size="7" required>
+                                        <option value="hoang.tn02@eximbank.com.vn">hoang.tn02@eximbank.com.vn</option>
+                                        <option value="lan.npt@eximbank.com.vn">lan.npt@eximbank.com.vn</option>
+                                        <option value="Group_PTKD_THE@eximbank.com.vn">Group_PTKD_THE@eximbank.com.vn</option>
+                                        <option value="Group_CSSP_THE@eximbank.com.vn">Group_CSSP_THE@eximbank.com.vn</option>
+                                        <option value="Group_PTDT_THE@eximbank.com.vn">Group_PTDT_THE@eximbank.com.vn</option>
+                                        <option value="Group_PMO_THE@eximbank.com.vn">Group_PMO_THE@eximbank.com.vn</option>
+                                        <option value="Group_POS_THE@eximbank.com.vn">Group_POS_THE@eximbank.com.vn</option>
+                                    </select>
+                                </div>
+                                <div class="mb-5 flex-grow flex flex-col">
+                                    <label for="message" class="block text-gray-300 font-medium mb-2">Nội dung email</label>
+                                    <textarea id="message" rows="8" class="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 flex-grow placeholder-gray-500" placeholder="Nhập nội dung chính..." required></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-cyan-500 text-gray-900 font-bold py-3 px-4 rounded-lg hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-cyan-500 transition-transform transform hover:scale-105">Tạo Email</button>
+                            </form>
+                        </div>
+                        <!-- Kết quả Email -->
+                        <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 flex flex-col space-y-6">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <h2 class="text-xl font-bold text-white">2. Người nhận</h2>
+                                    <button id="copyRecipientBtn" class="flex items-center text-cyan-400 hover:text-cyan-300 font-semibold py-2 px-3 rounded-lg text-sm transition disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                        <span>Sao chép</span>
+                                    </button>
+                                </div>
+                                <div id="recipientPreview" class="bg-gray-700 p-4 rounded-md whitespace-pre-wrap overflow-auto min-h-[50px]"><span class="text-gray-500">...</span></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <h2 class="text-xl font-bold text-white">3. Nội dung Email</h2>
+                                    <button id="copyContentBtn" class="flex items-center text-cyan-400 hover:text-cyan-300 font-semibold py-2 px-3 rounded-lg text-sm transition disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                                        <span>Sao chép</span>
+                                    </button>
+                                </div>
+                                <div id="contentPreview" class="bg-gray-700 p-4 rounded-md flex-grow min-h-[300px] whitespace-pre-wrap overflow-auto"><span class="text-gray-500">...</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. CÔNG CỤ TẠO LIÊN KẾT FILE -->
+            <div id="obsidian-tool" class="tab-content">
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-700">
+                        <h2 class="text-2xl font-semibold mb-4 border-b-2 border-cyan-500 pb-2">1. Nhập thông tin file</h2>
+                        <form id="desktopLinkForm" class="space-y-4">
+                            <div>
+                                <label for="filePathInput" class="block mb-2 text-sm font-medium text-gray-300">Đường dẫn file tuyệt đối</label>
+                                <input type="text" id="filePathInput" class="bg-gray-700 border border-gray-600 text-gray-200 block w-full rounded-lg p-2.5 placeholder-gray-400" placeholder="Dán đường dẫn file vào đây..." required>
+                            </div>
+                            <div>
+                                <label for="displayNameInput" class="block mb-2 text-sm font-medium text-gray-300">Tên hiển thị (tùy chọn)</label>
+                                <input type="text" id="displayNameInput" class="bg-gray-700 border border-gray-600 text-gray-200 block w-full rounded-lg p-2.5 placeholder-gray-400" placeholder="Để trống sẽ lấy tên file gốc">
+                            </div>
+                            <button type="submit" class="w-full text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:outline-none focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors">Tạo liên kết</button>
+                        </form>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-2xl shadow-lg border border-ray-700">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-2xl font-semibold">2. Liên kết Markdown</h2>
+                            <div>
+                                <button id="desktopLinkCopyButton" class="bg-gray-700 hover:bg-gray-600 text-gray-300 font-medium py-1 px-3 rounded-lg text-sm transition-colors">Sao chép</button>
+                                <div id="desktopLinkCopySuccess" class="bg-green-600 text-white font-medium py-1 px-3 rounded-lg text-sm hidden">Đã sao chép!</div>
+                            </div>
+                        </div>
+                        <pre class="bg-gray-900 rounded-lg p-4 h-28 overflow-auto"><code id="desktopLinkOutput" class="text-sm text-gray-400 italic">...</code></pre>
+                        
+                        <div class="mt-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-2xl font-semibold">3. Link single</h2>
+                                <div>
+                                    <button id="singleLinkCopyButton" class="bg-gray-700 hover:bg-gray-600 text-gray-300 font-medium py-1 px-3 rounded-lg text-sm transition-colors">Sao chép</button>
+                                    <div id="singleLinkCopySuccess" class="bg-green-600 text-white font-medium py-1 px-3 rounded-lg text-sm hidden">Đã sao chép!</div>
+                                </div>
+                            </div>
+                            <pre class="bg-gray-900 rounded-lg p-4 h-28 overflow-auto"><code id="singleLinkOutput" class="text-sm text-gray-400 italic">...</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center mt-12 pb-4">
+            <p class="text-sm text-gray-500">© 2025 - Phần mềm thuộc về Xuân Hòa</p>
+        </footer>
+    </main>
+
+    <script>
+        // --- LOGIC CHUNG CHO CÁC TAB ---
+        const tabNavigation = document.getElementById('tab-navigation');
+        const tabContent = document.getElementById('tab-content');
+
+        tabNavigation.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                const tabId = e.target.dataset.tab;
+
+                // Cập nhật trạng thái active cho nút tab
+                tabNavigation.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+
+                // Hiển thị nội dung tab tương ứng
+                tabContent.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(tabId).classList.add('active');
+            }
+        });
+
+        // --- LOGIC CHO CÔNG CỤ SOẠN THẢO EMAIL ---
+        (function() {
+            const emailForm = document.getElementById('emailForm');
+            if (!emailForm) return;
+
+            const recipientInput = document.getElementById('recipient');
+            const messageInput = document.getElementById('message');
+            const recipientPreview = document.getElementById('recipientPreview');
+            const contentPreview = document.getElementById('contentPreview');
+            const copyRecipientBtn = document.getElementById('copyRecipientBtn');
+            const copyContentBtn = document.getElementById('copyContentBtn');
+
+            function copyEmailContent(element, button) {
+                const textToCopy = element.innerText;
+                const buttonSpan = button.querySelector('span');
+                const originalText = 'Sao chép';
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    buttonSpan.innerText = 'Đã sao chép!';
+                    button.classList.add('text-green-400');
+                    setTimeout(() => {
+                        buttonSpan.innerText = originalText;
+                        button.classList.remove('text-green-400');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Lỗi sao chép: ', err);
+                    buttonSpan.innerText = 'Lỗi!';
+                });
+            }
+
+            emailForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const selectedOptions = Array.from(recipientInput.selectedOptions).map(option => option.value);
+                const recipientList = selectedOptions.join(', ');
+                const message = messageInput.value.trim();
+
+                if (selectedOptions.length === 0 || !message) {
+                    contentPreview.innerHTML = '<p class="text-red-400 font-medium">Vui lòng điền đủ thông tin!</p>';
+                    recipientPreview.innerHTML = '<span class="text-gray-500">...</span>';
+                    copyRecipientBtn.disabled = true;
+                    copyContentBtn.disabled = true;
+                    return;
+                }
+                
+                const prefixContent = `Hãy giúp tôi chỉnh sửa nội dung email sau thành một phiên bản:\n- Chuyên nghiệp (về văn phong, từ ngữ)\n- Rõ ràng, dễ hiểu (về nội dung và thông điệp)\n- Tự nhiên và thân thiện (nhưng vẫn giữ sự lịch sự, phù hợp môi trường công sở)\n- Đúng bố cục email (gồm phần mở đầu, nội dung chính, và kết thư)\n- Giữ nguyên ý gốc, KHÔNG làm thay đổi thông điệp, chỉ điều chỉnh về cách viết, cách trình bày.\n\n🎯 Yêu cầu định dạng:\n- Sử dụng tiếng Việt\n- Trình bày theo bố cục email chuẩn: Lời chào – Mục đích email – Nội dung chi tiết – Kết luận/đề xuất – Lời cảm ơn – Chữ ký\n- Tránh các cụm từ sáo rỗng, dài dòng không cần thiết\n- Sử dụng từ ngữ phù hợp môi trường công việc ngân hàng, tài chính\n\nKết quả mong đợi:\n- Một email chuyên nghiệp, dễ đọc, rõ ràng và lịch sự – sẵn sàng để gửi cho cấp trên, đồng nghiệp, đối tác hoặc khách hàng.\n\n---\nNội dung email cần chỉnh:\n---`;
+                const finalContent = `${prefixContent}\n\n${message}`;
+
+                recipientPreview.innerText = recipientList;
+                contentPreview.innerText = finalContent;
+                
+                copyRecipientBtn.disabled = false;
+                copyContentBtn.disabled = false;
+            });
+
+            copyRecipientBtn.addEventListener('click', () => copyEmailContent(recipientPreview, copyRecipientBtn));
+            copyContentBtn.addEventListener('click', () => copyEmailContent(contentPreview, copyContentBtn));
+        })();
+
+        // --- LOGIC CHO CÔNG CỤ LIÊN KẾT OBSIDIAN ---
+        (function() {
+            const desktopLinkForm = document.getElementById('desktopLinkForm');
+            if (!desktopLinkForm) return;
+
+            const filePathInput = document.getElementById('filePathInput');
+            const displayNameInput = document.getElementById('displayNameInput');
+            const desktopLinkOutput = document.getElementById('desktopLinkOutput');
+            const desktopLinkCopyButton = document.getElementById('desktopLinkCopyButton');
+            const desktopLinkCopySuccess = document.getElementById('desktopLinkCopySuccess');
+            const singleLinkOutput = document.getElementById('singleLinkOutput');
+            const singleLinkCopyButton = document.getElementById('singleLinkCopyButton');
+            const singleLinkCopySuccess = document.getElementById('singleLinkCopySuccess');
+
+            function copyObsidianLink(text, button, successMessage) {
+                navigator.clipboard.writeText(text).then(() => {
+                    button.classList.add('hidden');
+                    successMessage.classList.remove('hidden');
+                    setTimeout(() => {
+                        successMessage.classList.add('hidden');
+                        button.classList.remove('hidden');
+                    }, 2000);
+                }).catch(err => console.error('Lỗi sao chép: ', err));
+            }
+
+            desktopLinkForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let rawPath = filePathInput.value.trim();
+                if (!rawPath) return;
+
+                if (rawPath.startsWith('"') && rawPath.endsWith('"')) {
+                    rawPath = rawPath.substring(1, rawPath.length - 1);
+                }
+                
+                let processedPath = rawPath.replace(/\\/g, '/');
+                let drivePart = '';
+                let pathPart = processedPath;
+                const driveMatch = processedPath.match(/^([a-zA-Z]:\/)/);
+                if (driveMatch) {
+                    drivePart = driveMatch[1];
+                    pathPart = processedPath.substring(drivePart.length);
+                }
+                
+                const encodedPathPart = pathPart.split('/').map(part => encodeURIComponent(part)).join('/');
+                const finalEncodedPath = drivePart + encodedPathPart;
+
+                let displayName = displayNameInput.value.trim();
+                if (!displayName) {
+                    const fileNameWithExt = rawPath.split(/\\|\//).pop();
+                    const lastDotIndex = fileNameWithExt.lastIndexOf('.');
+                    displayName = lastDotIndex > -1 ? fileNameWithExt.slice(0, lastDotIndex) : fileNameWithExt;
+                }
+                
+                const markdownLink = `[${displayName}](file:///${finalEncodedPath})`;
+                const singleLink = `file:///${finalEncodedPath}`;
+                
+                desktopLinkOutput.textContent = markdownLink;
+                desktopLinkOutput.classList.remove('text-gray-400', 'italic');
+                singleLinkOutput.textContent = singleLink;
+                singleLinkOutput.classList.remove('text-gray-400', 'italic');
+            });
+
+            desktopLinkCopyButton.addEventListener('click', () => {
+                if (desktopLinkOutput.textContent && !desktopLinkOutput.classList.contains('italic')) {
+                    copyObsidianLink(desktopLinkOutput.innerText, desktopLinkCopyButton, desktopLinkCopySuccess);
+                }
+            });
+
+            singleLinkCopyButton.addEventListener('click', () => {
+                if (singleLinkOutput.textContent && !singleLinkOutput.classList.contains('italic')) {
+                    copyObsidianLink(singleLinkOutput.innerText, singleLinkCopyButton, singleLinkCopySuccess);
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
+
